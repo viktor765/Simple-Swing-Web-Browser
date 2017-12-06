@@ -1,10 +1,13 @@
 package swingBrowser;
 
 import java.awt.*;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Observer;
+import java.util.Observable;
 import javax.swing.*;
 
-public class View extends JPanel {
-    
+public class View extends JPanel implements Observer {
     public final JFrame myFrame;
     public final JButton back;
     public final JButton forward;
@@ -12,8 +15,10 @@ public class View extends JPanel {
     public final JButton history;
     public final JButton close;
     public final JTextField addressBar;
-    public JEditorPane editorPane;
+    public final JEditorPane editorPane;
     private final Model model;
+    
+    private final String initialURL = "http://google.com";
     
     private static final int X_SIZE = 700;  
     private static final int Y_SIZE = 500;
@@ -34,7 +39,7 @@ public class View extends JPanel {
         go = new JButton("Go");
         history = new JButton("History");
         close = new JButton("Close");
-        addressBar = new JTextField(20);
+        addressBar = new JTextField(initialURL, 20);
         
         myFrame.add(this);
 
@@ -54,5 +59,17 @@ public class View extends JPanel {
         
         myFrame.pack();
         myFrame.setVisible(true); 
+    }
+    
+    @Override
+    public void update(Observable o, Object url) {
+        System.out.println("Updated.");
+        
+        try {
+            editorPane.setPage((URL)url);
+            addressBar.setText(url.toString());
+        } catch (IOException e) {
+            System.err.println(e);
+        }
     }
 }

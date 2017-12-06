@@ -1,10 +1,8 @@
 package swingBrowser;
 
-import java.awt.Dimension;
 import java.awt.event.*;
-import java.io.*;
-import java.net.*;
-import javax.swing.*;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 
 public class Controller {
     private final Model model;
@@ -17,39 +15,35 @@ public class Controller {
         this.view = view;
         
         view.go.addActionListener(goListener);
+        view.addressBar.addActionListener(goListener);
         view.back.addActionListener(backListener);
         view.forward.addActionListener(forwardListener);
         view.history.addActionListener(historyListener);
         view.close.addActionListener(closeListener);
+        
+        view.editorPane.addHyperlinkListener(linkClickListener);
+        
+        model.addObserver(view);
     }
     
     private final ActionListener goListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("Go pushed.");
-        
-            JEditorPane editorPane = view.editorPane;
-            editorPane.setEditable(false);
+            System.out.println("Go or enter pushed.");
             
-            java.net.URL helpURL;
-            try {
-                helpURL = new URL(view.addressBar.getText());
-            } catch (MalformedURLException e2) {
-                System.out.print("Bad URL");
-                return;
-            }
-            
-            if (helpURL != null) {
-                try {
-                    editorPane.setPage(helpURL);
-                } catch (IOException e2) {
-                    System.err.println("Attempted to read a bad URL: " + helpURL);
-                }
-            } else {
-                System.err.println("Couldn't find file: TextSamplerDemoHelp.html");
+            model.setCurrentURL(view.addressBar.getText());
+        }
+    };
+    
+    private final HyperlinkListener linkClickListener =  new HyperlinkListener() {
+        @Override
+        public void hyperlinkUpdate(HyperlinkEvent e) {
+            if(e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                System.out.println("Link clicked.");
+                
+                model.setCurrentURL(e.getURL());
             }
         }
-
     };
     
     private final ActionListener backListener = new ActionListener() {
