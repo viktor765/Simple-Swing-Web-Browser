@@ -1,6 +1,5 @@
 package swingBrowser;
 
-import javax.swing.JButton;
 import javax.swing.*;
 
 public class View extends JPanel {
@@ -12,7 +11,7 @@ public class View extends JPanel {
     public final JButton close;
     protected JTextField addressBar;
 
-    public View() {
+    public View(Model model) {
         back = new JButton();
         forward = new JButton();
         go = new JButton();
