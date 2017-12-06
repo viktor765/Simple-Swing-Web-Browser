@@ -45,6 +45,12 @@ public class View extends JPanel {
         this.add(history);
         this.add(close);
         
+        JScrollPane editorScrollPane = new JScrollPane(editorPane);
+        editorScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        editorScrollPane.setPreferredSize(new Dimension(600, 400));
+        editorScrollPane.setMinimumSize(new Dimension(10, 10));
+        
+        this.add(editorScrollPane);
         
         myFrame.pack();
         myFrame.setVisible(true); 
