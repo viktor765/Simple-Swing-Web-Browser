@@ -31,7 +31,7 @@ public class Controller {
         public void actionPerformed(ActionEvent e) {
             System.out.println("Go or enter pushed.");
             
-            model.setCurrentURL(view.addressBar.getText());
+            model.setNewCurrentURL(view.addressBar.getText());
         }
     };
     
@@ -41,7 +41,7 @@ public class Controller {
             if(e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
                 System.out.println("Link clicked.");
                 
-                model.setCurrentURL(e.getURL());
+                model.setNewCurrentURL(e.getURL());
             }
         }
     };
@@ -50,6 +50,8 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e) {
             System.out.println("Back pushed.");
+            
+            model.setPrevious();
         }
     };
     
@@ -57,6 +59,8 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e) {
             System.out.println("Forward pushed.");
+            
+            model.setForward();
         }
     };
     
