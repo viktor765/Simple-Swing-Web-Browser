@@ -78,4 +78,28 @@ public class View extends JPanel implements Observer {
         back.setEnabled(model.hasPrevious());
         forward.setEnabled(model.hasForward());
     }
+    
+    public JEditorPane displayHistory() {
+        JFrame historyFrame = new JFrame();
+        historyFrame.setPreferredSize(new Dimension(X_SIZE, Y_SIZE));
+        
+        JEditorPane pane = new JEditorPane();
+        
+        JScrollPane editorScrollPane = new JScrollPane(pane);
+        editorScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        editorScrollPane.setPreferredSize(new Dimension(600, 400));
+        editorScrollPane.setMinimumSize(new Dimension(10, 10));
+        
+        pane.setContentType("text/html");
+        
+        pane.setEditable(false);
+
+        pane.setText(model.getHistoryHTML());
+        
+        historyFrame.add(editorScrollPane);     
+        historyFrame.pack();
+        historyFrame.setVisible(true);
+        
+        return pane;
+    }
 }

@@ -1,6 +1,7 @@
 package swingBrowser;
 
 import java.awt.event.*;
+import javax.swing.JEditorPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
@@ -68,6 +69,10 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e) {
             System.out.println("History pushed.");
+            
+            JEditorPane historyPane = view.displayHistory();
+            
+            historyPane.addHyperlinkListener(linkClickListener);
         }
     };
     

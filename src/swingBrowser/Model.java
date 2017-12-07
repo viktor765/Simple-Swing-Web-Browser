@@ -2,6 +2,7 @@ package swingBrowser;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Stack;
 
@@ -9,6 +10,7 @@ public class Model extends Observable {
     private URL currentURL;
     private final Stack<URL> previousStack = new Stack<>();
     private final Stack<URL> forwardStack = new Stack<>();
+    private final ArrayList<URL> history = new ArrayList<>();
     
     public void setNewCurrentURL(String urlStr) {
         try {
@@ -32,6 +34,8 @@ public class Model extends Observable {
         
         setChanged();
         notifyObservers(currentURL);
+        
+        history.add(currentURL);
     }
     
     public void setPrevious() {
@@ -60,5 +64,22 @@ public class Model extends Observable {
     
     public Boolean hasForward() {
         return !forwardStack.isEmpty();
+    }
+    
+    public String getHistoryHTML() {
+        String data = "<html><head><title>History></title></head><body><table border=\"1\">";
+        
+        for (URL url : history) {
+            data += "<tr><td>interlinked cell</td><td> " 
+                    + "<a href=\""
+                    + url.toString()
+                    + "\">"
+                    + url.toString()
+                    + "</a></td></tr>";
+        }
+        
+        data += "</table></body></html>";
+        
+        return data;
     }
 }
