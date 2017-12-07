@@ -73,8 +73,6 @@ public class View extends JPanel implements Observer {
     
     @Override
     public void update(Observable o, Object url) {
-        System.out.println("Updated.");
-        
         try {
             editorPane.setPage((URL)url);
             addressBar.setText(url.toString());

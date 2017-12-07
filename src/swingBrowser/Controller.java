@@ -31,8 +31,6 @@ public class Controller {
     private final ActionListener goListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("Go or enter pushed.");
-            
             try {
                 model.setNewCurrentURL(view.addressBar.getText());
             } catch (MalformedURLException e2) {
@@ -44,9 +42,7 @@ public class Controller {
     private final HyperlinkListener linkClickListener =  new HyperlinkListener() {
         @Override
         public void hyperlinkUpdate(HyperlinkEvent e) {
-            if(e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                System.out.println("Link clicked.");
-                
+            if(e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {                
                 model.setNewCurrentURL(e.getURL());
             }
         }
@@ -55,8 +51,6 @@ public class Controller {
     private final ActionListener backListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("Back pushed.");
-            
             model.setPrevious();
         }
     };
@@ -64,8 +58,6 @@ public class Controller {
     private final ActionListener forwardListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("Forward pushed.");
-            
             model.setForward();
         }
     };
@@ -73,8 +65,6 @@ public class Controller {
     private final ActionListener historyListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("History pushed.");
-            
             JEditorPane historyPane = view.displayHistory();
             
             historyPane.addHyperlinkListener(linkClickListener);
@@ -84,7 +74,6 @@ public class Controller {
     private final ActionListener closeListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("Close pushed.");
             System.exit(0);
         }
     };
