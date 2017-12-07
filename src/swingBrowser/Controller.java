@@ -1,6 +1,7 @@
 package swingBrowser;
 
 import java.awt.event.*;
+import java.net.MalformedURLException;
 import javax.swing.JEditorPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
@@ -32,7 +33,11 @@ public class Controller {
         public void actionPerformed(ActionEvent e) {
             System.out.println("Go or enter pushed.");
             
-            model.setNewCurrentURL(view.addressBar.getText());
+            try {
+                model.setNewCurrentURL(view.addressBar.getText());
+            } catch (MalformedURLException e2) {
+                view.displayError("Bad URL.");
+            }
         }
     };
     

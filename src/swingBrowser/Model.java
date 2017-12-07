@@ -12,12 +12,8 @@ public class Model extends Observable {
     private final Stack<URL> forwardStack = new Stack<>();
     private final ArrayList<URL> history = new ArrayList<>();
     
-    public void setNewCurrentURL(String urlStr) {
-        try {
-            setNewCurrentURL(new URL(urlStr));
-        } catch (MalformedURLException e) {
-            System.err.println(e);
-        }
+    public void setNewCurrentURL(String urlStr) throws MalformedURLException {
+        setNewCurrentURL(new URL(urlStr));
     }
     
     public void setNewCurrentURL(URL url) {
