@@ -23,9 +23,8 @@ public class Model extends Observable {
             previousStack.push(currentURL);
         }
         
-        setCurrentURL(url);       
-        
         forwardStack.clear();
+        setCurrentURL(url);
     }
     
     private void setCurrentURL(URL url) {
@@ -56,10 +55,10 @@ public class Model extends Observable {
     }
     
     public Boolean hasPrevious() {
-        return !previousStack.empty();
+        return !previousStack.isEmpty();
     }
     
     public Boolean hasForward() {
-        return !forwardStack.empty();
+        return !forwardStack.isEmpty();
     }
 }
