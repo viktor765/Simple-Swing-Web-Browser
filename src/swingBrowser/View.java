@@ -50,6 +50,9 @@ public class View extends JPanel implements Observer {
         this.add(history);
         this.add(close);
         
+        back.setEnabled(model.hasPrevious());
+        forward.setEnabled(model.hasForward());
+        
         JScrollPane editorScrollPane = new JScrollPane(editorPane);
         editorScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         editorScrollPane.setPreferredSize(new Dimension(600, 400));
@@ -71,5 +74,8 @@ public class View extends JPanel implements Observer {
         } catch (IOException e) {
             System.err.println(e);
         }
+        
+        back.setEnabled(model.hasPrevious());
+        forward.setEnabled(model.hasForward());
     }
 }
