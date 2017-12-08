@@ -1,34 +1,35 @@
 package swingBrowser;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.IOException;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.Observer;
 import java.util.Observable;
 import javax.swing.*;
+import javax.swing.event.HyperlinkListener;
 
 public class View extends JPanel implements Observer {
-    public final JFrame myFrame;
-    public final JButton back;
-    public final JButton forward;
-    public final JButton go;
-    public final JButton history;
-    public final JButton close;
-    public final JTextField addressBar;
-    public final JEditorPane editorPane;
+    private final JFrame myFrame;
+    private final JButton backButton;
+    private final JButton forwardButton;
+    private final JButton goButton;
+    private final JButton historyButton;
+    private final JButton closeButton;
+    private final JTextField addressBar;
+    private final JEditorPane editorPane;
     private final Model model;
     
-    private final String initialURL = "http://google.com";
-    
-    private static final int X_SIZE = 700;  
-    private static final int Y_SIZE = 500;
+    private static final int X_SIZE = 1000;  
+    private static final int Y_SIZE = 800;
     private static final int HISTORY_X_SIZE = 400;
     private static final int HISTORY_Y_SIZE = 400;
     private static final int ERROR_X_SIZE = 300;
     private static final int ERROR_Y_SIZE = 200;
+    private static final int SCROLLPANE_X_SIZE = 900;
+    private static final int SCROLLPANE_Y_SIZE = 600;
+    
+    private static final String initialURL = "http://google.com";
 
     public View(Model model) {
         this.model = model;
@@ -41,28 +42,30 @@ public class View extends JPanel implements Observer {
         
         setPreferredSize(new Dimension(X_SIZE, Y_SIZE));
         
-        back = new JButton("Back");
-        forward = new JButton("Forward");
-        go = new JButton("Go");
-        history = new JButton("History");
-        close = new JButton("Close");
+        backButton = new JButton("Back");
+        forwardButton = new JButton("Forward");
+        goButton = new JButton("Go");
+        historyButton = new JButton("History");
+        closeButton = new JButton("Close");
         addressBar = new JTextField(initialURL, 20);
         
         myFrame.add(this);
 
-        this.add(back);
-        this.add(forward);
+        this.add(backButton);
+        this.add(forwardButton);
         this.add(addressBar);
-        this.add(go);
-        this.add(history);
-        this.add(close);
+        this.add(goButton);
+        this.add(historyButton);
+        this.add(closeButton);
         
-        back.setEnabled(model.hasPrevious());
-        forward.setEnabled(model.hasForward());
+        closeButton.addActionListener(closeListener);
+        
+        backButton.setEnabled(model.hasPrevious());
+        forwardButton.setEnabled(model.hasForward());
         
         JScrollPane editorScrollPane = new JScrollPane(editorPane);
         editorScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        editorScrollPane.setPreferredSize(new Dimension(600, 400));
+        editorScrollPane.setPreferredSize(new Dimension(SCROLLPANE_X_SIZE, SCROLLPANE_Y_SIZE));
         editorScrollPane.setMinimumSize(new Dimension(10, 10));
         
         this.add(editorScrollPane);
@@ -70,6 +73,10 @@ public class View extends JPanel implements Observer {
         myFrame.pack();
         myFrame.setVisible(true); 
     }
+    
+    private final ActionListener closeListener = (ActionEvent e) -> {
+        System.exit(0);
+    };
     
     @Override
     public void update(Observable o, Object url) {
@@ -83,8 +90,8 @@ public class View extends JPanel implements Observer {
             return;
         }
         
-        back.setEnabled(model.hasPrevious());
-        forward.setEnabled(model.hasForward());
+        backButton.setEnabled(model.hasPrevious());
+        forwardButton.setEnabled(model.hasForward());
     }
     
     public void displayError(String errorString) {
@@ -133,5 +140,30 @@ public class View extends JPanel implements Observer {
         historyFrame.setVisible(true);
         
         return pane;
+    }
+    
+    public void addGoListener(ActionListener actionListener) {
+        goButton.addActionListener(actionListener);
+        addressBar.addActionListener(actionListener);
+    }
+    
+    public void addForwardListener(ActionListener actionListener) {
+        forwardButton.addActionListener(actionListener);
+    }
+    
+    public void addBackListener(ActionListener actionListener) {
+        backButton.addActionListener(actionListener);
+    }
+    
+    public void addHistoryListener(ActionListener actionListener) {
+        historyButton.addActionListener(actionListener);
+    }
+    
+    public void addHyperlinkListener(HyperlinkListener actionListener) {
+        editorPane.addHyperlinkListener(actionListener);
+    }
+    
+    public String getAddressBarText() {
+        return addressBar.getText();
     }
 }

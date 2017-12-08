@@ -2,9 +2,7 @@ package swingBrowser;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Stack;
+import java.util.*;
 
 public class Model extends Observable {
     private URL currentURL;

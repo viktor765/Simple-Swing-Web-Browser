@@ -3,47 +3,49 @@ package swingBrowser;
 import java.awt.event.*;
 import java.net.MalformedURLException;
 import javax.swing.JEditorPane;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
+import javax.swing.event.*;
 
 public class Controller {
     private final Model model;
     private final View view;
     
-    public Controller (Model model, View view) {
-        System.out.println("Hello world!");
-        
+    public Controller(Model model, View view) {
         this.model = model;
         this.view = view;
         
-        view.go.addActionListener(goListener);
-        view.addressBar.addActionListener(goListener);
-        view.back.addActionListener(backListener);
-        view.forward.addActionListener(forwardListener);
-        view.history.addActionListener(historyListener);
-        view.close.addActionListener(closeListener);
+        view.addGoListener(goListener);
+        view.addBackListener(backListener);
+        view.addForwardListener(forwardListener);
+        view.addHistoryListener(historyListener);
+        view.addHyperlinkListener(linkClickListener);
         
-        view.editorPane.addHyperlinkListener(linkClickListener);
-        
-        model.addObserver(view);
+        go();
+    }
+    
+    private void go() {
+        try {
+            model.setNewCurrentURL(view.getAddressBarText());
+        } catch (MalformedURLException e2) {
+            view.displayError("Bad URL.");
+        }
     }
     
     private final ActionListener goListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            try {
-                model.setNewCurrentURL(view.addressBar.getText());
-            } catch (MalformedURLException e2) {
-                view.displayError("Bad URL.");
-            }
+            go();
         }
     };
     
     private final HyperlinkListener linkClickListener =  new HyperlinkListener() {
         @Override
         public void hyperlinkUpdate(HyperlinkEvent e) {
-            if(e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {                
-                model.setNewCurrentURL(e.getURL());
+            if(e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                try {
+                    model.setNewCurrentURL(e.getURL().toString());
+                } catch (MalformedURLException e2) {
+                    view.displayError("Bad URL.");
+                }
             }
         }
     };
@@ -68,13 +70,6 @@ public class Controller {
             JEditorPane historyPane = view.displayHistory();
             
             historyPane.addHyperlinkListener(linkClickListener);
-        }
-    };
-    
-    private final ActionListener closeListener = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            System.exit(0);
         }
     };
 }
