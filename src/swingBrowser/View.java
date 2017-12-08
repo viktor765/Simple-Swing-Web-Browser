@@ -28,8 +28,6 @@ public class View extends JPanel implements Observer {
     private static final int ERROR_Y_SIZE = 200;
     private static final int SCROLLPANE_X_SIZE = 900;
     private static final int SCROLLPANE_Y_SIZE = 600;
-    
-    private static final String initialURL = "http://google.com";
 
     public View(Model model) {
         this.model = model;
@@ -47,7 +45,7 @@ public class View extends JPanel implements Observer {
         goButton = new JButton("Go");
         historyButton = new JButton("History");
         closeButton = new JButton("Close");
-        addressBar = new JTextField(initialURL, 20);
+        addressBar = new JTextField(20);
         
         myFrame.add(this);
 
@@ -74,9 +72,8 @@ public class View extends JPanel implements Observer {
         myFrame.setVisible(true); 
     }
     
-    private final ActionListener closeListener = (ActionEvent e) -> {
-        System.exit(0);
-    };
+    private final ActionListener closeListener = 
+            (ActionEvent e) -> System.exit(0);
     
     @Override
     public void update(Observable o, Object url) {
@@ -107,12 +104,7 @@ public class View extends JPanel implements Observer {
         JButton errorCloseButton = new JButton("Close");
         errorFrame.add(errorCloseButton);
 
-        errorCloseButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                errorFrame.dispose();
-            }
-        });
+        errorCloseButton.addActionListener((ActionEvent e) -> errorFrame.dispose());
 
         errorFrame.pack();
         errorFrame.setVisible(true);
@@ -159,7 +151,7 @@ public class View extends JPanel implements Observer {
         historyButton.addActionListener(actionListener);
     }
     
-    public void addHyperlinkListener(HyperlinkListener actionListener) {
+    public void addEditorPaneHyperlinkListener(HyperlinkListener actionListener) {
         editorPane.addHyperlinkListener(actionListener);
     }
     

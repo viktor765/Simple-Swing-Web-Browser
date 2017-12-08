@@ -3,7 +3,6 @@ package swingBrowser;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
-import java.util.function.Consumer;
 
 public class Model extends Observable {
     private URL currentURL;
@@ -12,7 +11,8 @@ public class Model extends Observable {
     private final ArrayList<URL> history = new ArrayList<>();
     
     public void setNewCurrentURL(String urlStr) throws MalformedURLException {
-        setNewCurrentURL(new URL(urlStr));
+        setNewCurrentURL(new URL(
+                urlStr.matches("\\w+\\.\\w+") ? "http://" + urlStr : urlStr));
     }
     
     public void setNewCurrentURL(URL url) {
@@ -35,22 +35,12 @@ public class Model extends Observable {
     
     public void setPrevious() {
         forwardStack.push(currentURL);
-        
-        try {
-            setCurrentURL(previousStack.pop());
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+        setCurrentURL(previousStack.pop());
     }
     
     public void setForward() {
         previousStack.push(currentURL);
-        
-        try {
-            setCurrentURL(forwardStack.pop());
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+        setCurrentURL(forwardStack.pop());      
     }
     
     public Boolean hasPrevious() {
@@ -62,7 +52,7 @@ public class Model extends Observable {
     }
     
     public String getHistoryHTML() {
-        final StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         sb.append("<html><head><title>History></title></head><body><table border=\"1\">");
         
         history.stream().forEach((URL url) -> {
