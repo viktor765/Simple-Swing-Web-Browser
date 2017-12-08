@@ -3,6 +3,7 @@ package swingBrowser;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
+import java.util.function.Consumer;
 
 public class Model extends Observable {
     private URL currentURL;
@@ -61,19 +62,20 @@ public class Model extends Observable {
     }
     
     public String getHistoryHTML() {
-        String data = "<html><head><title>History></title></head><body><table border=\"1\">";
+        final StringBuilder sb = new StringBuilder();
+        sb.append("<html><head><title>History></title></head><body><table border=\"1\">");
         
-        for (URL url : history) {
-            data += "<tr><td>interlinked cell</td><td> " 
-                    + "<a href=\""
-                    + url.toString()
-                    + "\">"
-                    + url.toString()
-                    + "</a></td></tr>";
-        }
+        history.stream().forEach((URL url) -> {
+            sb.append("<tr><td>interlinked cell</td><td>")
+              .append("<a href=\"")
+              .append(url.toString())
+              .append("\">")
+              .append(url.toString())
+              .append("</a></td></tr>");
+        });
         
-        data += "</table></body></html>";
+        sb.append("</table></body></html>");
         
-        return data;
+        return sb.toString();
     }
 }
